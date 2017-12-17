@@ -1,18 +1,21 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
+using System.Collections;
 
+[RequireComponent(typeof(Collider))]
 public class controller : MonoBehaviour {
 	public Text Score;
 	public Text highScore;
 	public GameObject howToPlay;
 	private float startTime;
+	private float a;
 	private bool walking = false;
 	private bool brain = true;
 	private Vector3 spawnPoint;
 	// Use this for initialization
 
 	void Start () {
-		spawnPoint = transform.position;
+		spawnPoint = transform.localPosition;
 		startTime = Time.time;
 		highScore.text = PlayerPrefs.GetFloat ("HighScore", 0).ToString ();
 		howToPlay.SetActive (true);
@@ -24,7 +27,7 @@ public class controller : MonoBehaviour {
 		if (brain == false)
 			return;
 		else {
-			if (howToPlay.activeInHierarchy == false){
+			if (howToPlay.activeInHierarchy == false) {
 				Time.timeScale = 1f;
 				float t = Time.time - startTime; 
 				Score.text = t.ToString ("f2") + " detik";
@@ -49,15 +52,15 @@ public class controller : MonoBehaviour {
 					}
 				}
 
-				if (t < PlayerPrefs.GetInt ("HighScore", 0)) {
+				if (t < PlayerPrefs.GetFloat ("HighScore")) {
 					PlayerPrefs.SetFloat ("HighScore", t);
 				}
-			} else 
-				Time.timeScale = 0f;
+			} else {
+				a = 0f;
+				Time.timeScale = a;
+			}
 				
 		}
-
-	
 	}
 	void OnCollisionEnter(Collision col){
 		if(col.gameObject.name == "BLOCK")
@@ -65,6 +68,12 @@ public class controller : MonoBehaviour {
 			Debug.Log ("YOU WIN");
 			brain = false;
 			Score.color = Color.yellow;
+			Destroy (col.gameObject);
 		}
+	}
+
+	public void Reset() {
+		transform.localPosition = spawnPoint;
+		Debug.Log ("PRESSED");
 	}
 }
