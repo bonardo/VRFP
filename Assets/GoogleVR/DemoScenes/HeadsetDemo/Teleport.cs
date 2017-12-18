@@ -20,7 +20,7 @@ public class Teleport : MonoBehaviour, IGvrGazeResponder {
   private Vector3 startingPosition;
 
   void Start() {
-    startingPosition = transform.localPosition;
+		startingPosition = transform.position;
     SetGazedAt(false);
   }
 
@@ -36,7 +36,8 @@ public class Teleport : MonoBehaviour, IGvrGazeResponder {
   }
 
   public void Reset() {
-    transform.localPosition = startingPosition;
+		transform.position = startingPosition;
+		Debug.Log ("PRESSED");
   }
 
   public void ToggleVRMode() {
