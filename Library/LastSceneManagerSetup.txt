@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/mainfp.unity
+- path: D:/KULIAH_NIH/SEMESTER 7/RVA/VRFP/Assets/TemplateLevel.unity
   isLoaded: 1
   isActive: 1
