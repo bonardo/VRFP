@@ -7,16 +7,17 @@ public class controller : MonoBehaviour {
 	public Text Score;
 	public Text highScore;
 	public GameObject howToPlay;
-	private float startTime;
-	private float a;
+	public GameObject PopUp;
+	private float startTime=100;
 	private bool walking = false;
 	private bool brain = true;
 	private Vector3 spawnPoint;
+	public static controller instance = null;
 	// Use this for initialization
 
 	void Start () {
 		spawnPoint = transform.localPosition;
-		startTime = Time.time;
+		//startTime = Time.time;
 		highScore.text = PlayerPrefs.GetFloat ("HighScore", 0).ToString ();
 		howToPlay.SetActive (true);
 	}
@@ -29,11 +30,12 @@ public class controller : MonoBehaviour {
 		else {
 			if (howToPlay.activeInHierarchy == false) {
 				Time.timeScale = 1f;
-				float t = Time.time - startTime; 
-				Score.text = t.ToString ("f2") + " detik";
+				startTime -= Time.deltaTime;
+//				float t = Time.time - startTime;
+				Score.text = startTime.ToString ("f2") + " detik";
 				if (walking == true && brain == true) {
 					transform.position = transform.position + Camera.main.transform.forward * .5f * Time.deltaTime;
-					//transform.position = transform.position + Player.transform.forward * .5f * Time.deltaTime; 
+					//transform.position = transform.position + Player.transform.forward * .5f * Time.deltaTime;
 				}
 
 				if (transform.position.y < -10f) {
@@ -52,14 +54,17 @@ public class controller : MonoBehaviour {
 					}
 				}
 
-				if (t < PlayerPrefs.GetFloat ("HighScore")) {
-					PlayerPrefs.SetFloat ("HighScore", t);
+				if (startTime < PlayerPrefs.GetFloat ("HighScore")) {
+					PlayerPrefs.SetFloat ("HighScore", startTime);
+				}
+				if(startTime <= 0)
+				{
+					Gameovers();
 				}
 			} else {
-				a = 0f;
-				Time.timeScale = a;
+				Time.timeScale = 0f;
 			}
-				
+
 		}
 	}
 	void OnCollisionEnter(Collision col){
@@ -70,10 +75,46 @@ public class controller : MonoBehaviour {
 			Score.color = Color.yellow;
 			Destroy (col.gameObject);
 		}
+		//Tidakterpakai
+		else if(col.gameObject.name == "Diamond")
+		{
+			Debug.Log ("KENA");
+			col.gameObject.GetComponent<Renderer> ().enabled = false;
+			col.gameObject.GetComponent<Collider> ().enabled = false;
+			Destroy (col.gameObject);
+			startTime += 5f;
+		}
 	}
 
-	public void Reset() {
-		transform.localPosition = spawnPoint;
-		Debug.Log ("PRESSED");
+	void Awake(){
+		if (instance == null) {
+			instance = this;
+		}
+		else if (instance != null){
+			Destroy(gameObject);
+		}
 	}
+
+	void Gameovers(){
+		Time.timeScale = 0f;
+		PopUp.SetActive(true);
+		brain = false;
+	}
+
+	public void Reseto(){
+		Debug.Log("s");
+	}
+
+	public void MoveScenes(string sceneName){
+		Application.LoadLevel (sceneName);
+	}
+
+
+	public void Collecta(GameObject passedObject){
+		passedObject.GetComponent<Renderer> ().enabled = false;
+		passedObject.GetComponent<Collider> ().enabled = false;
+		startTime += 5f;
+		Destroy(passedObject,1.0f);
+	}
+
 }
