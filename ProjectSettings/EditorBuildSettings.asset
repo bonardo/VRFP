@@ -5,12 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Coba2.unity
-    guid: d59ac1c8c22e42b47b7995b436dda05c
   - enabled: 1
-    path: Assets/mainfp.unity
-    guid: 577f631fa56197142b93d728999604a6
+    path: Assets/title.unity
+    guid: 5e7335e490ccc614ca879e0ef067b775
   - enabled: 1
-    path: Assets/TemplateLevel.unity
-    guid: fe2b20f6a59b6544e928c741e03aee5d
+    path: Assets/level4.unity
+    guid: bd44e8f05018c564d938b3e4abe11ffc

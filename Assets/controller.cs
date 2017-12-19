@@ -7,9 +7,8 @@ public class controller : MonoBehaviour {
 	public Text Score;
 	public Text highScore;
 	public GameObject howToPlay;
-	public GameObject howToPley;
 	public GameObject PopUp;
-	private float startTime=30;
+	private float startTime=100;
 	private bool walking = false;
 	private bool brain = true;
 	private Vector3 spawnPoint;
